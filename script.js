@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // delete button dito
+    // delete button
     document.querySelectorAll('.delete-btn').forEach(button => {
         button.addEventListener('click', function() {
             const index = this.getAttribute('data-index');
