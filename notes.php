@@ -6,18 +6,19 @@ $filename = 'todo.txt';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['task'])) {
     $task = trim($_POST['task']);
     if (!empty($task)) {
-        // Append the task to the todo.txt file
+
         file_put_contents($filename, $task . PHP_EOL, FILE_APPEND);
 
-        // Set a success message and redirect
+
         $_SESSION['message'] = 'Task added successfully!';
         header("Location: notes.php");
         exit;
     }
 }
 
+
 if (isset($_GET['delete'])) {
-    $indexToDelete = $_GET['delete'];
+    $indexToDelete = (int)$_GET['delete'];
 
     if (file_exists($filename)) {
         $tasks = file($filename, FILE_IGNORE_NEW_LINES);
@@ -34,8 +35,13 @@ if (isset($_GET['delete'])) {
     exit;
 }
 
+// file_get_contents
 $tasks = [];
 if (file_exists($filename)) {
+    // Load the entire file as a string
+    $fileContents = file_get_contents($filename);
+    
+    // Split into lines and remove newlines
     $tasks = file($filename, FILE_IGNORE_NEW_LINES);
 }
 ?>
@@ -47,7 +53,6 @@ if (file_exists($filename)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Tracker</title>
     <link rel="stylesheet" href="style.css">
-    <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 <body>
@@ -75,13 +80,10 @@ if (file_exists($filename)) {
     </ul>
     </div>
 
-    <!-- SweetAlert2 JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- custom JavaScript -->
     <script src="script.js"></script>
 
     <?php
-    
     if (isset($_SESSION['message'])) {
         echo '<script>
             document.addEventListener("DOMContentLoaded", function() {
